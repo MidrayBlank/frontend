@@ -1,6 +1,4 @@
-import './style.css';
-
-class Router {
+export class Router {
 	private routes: Record<string, string> = {
 		'/': '/pages/index.html',
 		'/about': '/pages/about.html',
@@ -38,7 +36,3 @@ class Router {
 		this.loadRoute();
 	}
 }
-
-const router = new Router();
-router.init();
-(window as any).router = router;
