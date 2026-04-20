@@ -1,11 +1,254 @@
-<!doctype html>
-<html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Home</title>
-	</head>
-	<body>
-		Home
-	</body>
-</html>
+<div class="container py-4">
+    <!-- Заголовок страницы -->
+    <div class="row mb-4">
+        <div class="col-12 text-center">
+            <h1 style="font-weight: 300; color: #4a5568; letter-spacing: -0.5px;">
+                <i class="fas fa-chart-line me-2" style="color: #667eea;"></i>
+                Мониторинг популяции
+            </h1>
+            <p style="color: #718096; font-weight: 300;">Анализ численности населения по регионам России</p>
+        </div>
+    </div>
+
+    <!-- Тепловая карта и топ 5 -->
+    <div class="row mb-4">
+        <!-- Тепловая карта -->
+        <div class="col-md-8">
+            <div class="card shadow-sm border-0" style="border-radius: 20px; background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 100%);">
+                <div class="card-body p-4">
+                    <h5 class="mb-3" style="font-weight: 400; color: #4a5568;">
+                        <i class="fas fa-map me-2" style="color: #667eea;"></i>
+                        Тепловая карта плотности населения России
+                    </h5>
+                    <div class="heatmap-container" style="background: #f0f2f5; border-radius: 16px; padding: 20px; min-height: 400px;">
+                        <!-- Здесь будет тепловая карта -->
+                        <svg width="100%" height="400" viewBox="0 0 800 400" style="background: linear-gradient(135deg, #f0f2f5 0%, #e8ebf0 100%); border-radius: 12px;">
+                            <!-- Заглушка для тепловой карты -->
+                            <rect x="50" y="50" width="700" height="250" fill="#e2e8f0" rx="10" opacity="0.5"/>
+                            <text x="400" y="180" text-anchor="middle" fill="#718096" font-size="16" font-weight="300">
+                                🗺️ Здесь будет интерактивная тепловая карта России
+                            </text>
+                            <text x="400" y="210" text-anchor="middle" fill="#a0aec0" font-size="12" font-weight="300">
+                                (цветовая градация от красного к голубому)
+                            </text>
+                            
+                            <!-- Пример регионов на карте -->
+                            <rect x="100" y="120" width="60" height="40" fill="#ff0000" opacity="0.7" rx="4"/>
+                            <text x="130" y="115" text-anchor="middle" fill="#4a5568" font-size="10">Москва</text>
+                            
+                            <rect x="200" y="140" width="60" height="40" fill="#ff4500" opacity="0.7" rx="4"/>
+                            <text x="230" y="135" text-anchor="middle" fill="#4a5568" font-size="10">СПБ</text>
+                            
+                            <rect x="350" y="160" width="60" height="40" fill="#ff8c00" opacity="0.7" rx="4"/>
+                            <text x="380" y="155" text-anchor="middle" fill="#4a5568" font-size="10">МО</text>
+                            
+                            <rect x="500" y="180" width="60" height="40" fill="#ffd700" opacity="0.7" rx="4"/>
+                            <text x="530" y="175" text-anchor="middle" fill="#4a5568" font-size="10">Краснодар</text>
+                            
+                            <rect x="600" y="200" width="60" height="40" fill="#90ee90" opacity="0.7" rx="4"/>
+                            <text x="630" y="195" text-anchor="middle" fill="#4a5568" font-size="10">Новосибирск</text>
+                            
+                            <!-- Легенда -->
+                            <rect x="100" y="300" width="20" height="20" fill="#ff0000" rx="3"/>
+                            <text x="130" y="315" fill="#4a5568" font-size="11">Высокая</text>
+                            
+                            <rect x="220" y="300" width="20" height="20" fill="#ff8c00" rx="3"/>
+                            <text x="250" y="315" fill="#4a5568" font-size="11">Средняя</text>
+                            
+                            <rect x="340" y="300" width="20" height="20" fill="#ffd700" rx="3"/>
+                            <text x="370" y="315" fill="#4a5568" font-size="11">Низкая</text>
+                            
+                            <rect x="460" y="300" width="20" height="20" fill="#90ee90" rx="3"/>
+                            <text x="490" y="315" fill="#4a5568" font-size="11">Очень низкая</text>
+                            
+                            <rect x="600" y="300" width="20" height="20" fill="#87ceeb" rx="3"/>
+                            <text x="630" y="315" fill="#4a5568" font-size="11">Минимальная</text>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Топ 5 муниципалитетов -->
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0" style="border-radius: 20px; background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 100%);">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="mb-0" style="font-weight: 400; color: #4a5568;">
+                            <i class="fas fa-trophy me-2" style="color: #667eea;"></i>
+                            Топ 5 муниципалитетов
+                        </h5>
+                        <div class="btn-group">
+                            <button class="btn btn-sm" id="showGrowth" style="background: #667eea; color: white; border-radius: 20px;">📈 Рост</button>
+                            <button class="btn btn-sm" id="showDecline" style="background: #e2e8f0; color: #4a5568; border-radius: 20px;">📉 Снижение</button>
+                        </div>
+                    </div>
+                    <div id="topList">
+                        <table class="table table-hover" style="font-weight: 300;">
+                            <thead>
+                                <tr><th>#</th><th>Муниципалитет</th><th>Динамика</th></tr>
+                            </thead>
+                            <tbody id="topTableBody">
+                                <tr><td>1</td><td>Красногорск</td><td class="text-success fw-bold">+15.2%</td></tr>
+                                <tr><td>2</td><td>Сколково</td><td class="text-success fw-bold">+12.8%</td></tr>
+                                <tr><td>3</td><td>Кудрово</td><td class="text-success fw-bold">+11.5%</td></tr>
+                                <tr><td>4</td><td>Южный</td><td class="text-success fw-bold">+9.3%</td></tr>
+                                <tr><td>5</td><td>Северный</td><td class="text-success fw-bold">+7.8%</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Полная таблица данных -->
+    <div class="card shadow-sm border-0" style="border-radius: 20px; background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 100%);">
+        <div class="card-body p-4">
+            <h5 class="mb-4" style="font-weight: 400; color: #4a5568;">
+                <i class="fas fa-table me-2" style="color: #667eea;"></i>
+                Детальные данные мониторинга
+            </h5>
+            
+            <!-- Фильтры -->
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <label class="form-label" style="color: #4a5568; font-weight: 300;">Субъект РФ</label>
+                    <select id="filterSubject" class="form-select" style="border-radius: 12px; border-color: #e2e8f0;">
+                        <option value="">Все</option>
+                        <option value="Московская обл">Московская область</option>
+                        <option value="Ленинградская обл">Ленинградская область</option>
+                        <option value="Краснодарский край">Краснодарский край</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label" style="color: #4a5568; font-weight: 300;">Период анализа</label>
+                    <select id="filterPeriod" class="form-select" style="border-radius: 12px; border-color: #e2e8f0;">
+                        <option value="">Все</option>
+                        <option value="2020-2024">2020-2024</option>
+                    </select>
+                </div>
+                <div class="col-md-4 d-flex align-items-end">
+                    <button id="applyFilters" class="btn w-100" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 12px; padding: 10px;">
+                        <i class="fas fa-filter me-2"></i>Применить фильтры
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Таблица -->
+            <div class="table-responsive">
+                <table class="table table-hover" style="font-weight: 300;">
+                    <thead style="background: #f8f9ff;">
+                        <tr>
+                            <th>ID</th>
+                            <th>Субъект РФ</th>
+                            <th>Муниципалитет</th>
+                            <th>Городской округ</th>
+                            <th>Период</th>
+                            <th>Динамика</th>
+                            <th>Рождаемость</th>
+                            <th>Смертность</th>
+                            <th>Ест.прирост</th>
+                            <th>Миграция</th>
+                        </tr>
+                    </thead>
+                    <tbody id="fullTableBody">
+                        <tr><td>1</td><td>Московская обл</td><td>Красногорск</td><td>Красногорский</td><td>2020-2024</td><td class="text-success">+15.2%</td><td>12.5‰</td><td>8.2‰</td><td class="text-success">+4.3‰</td><td class="text-success">+10.9‰</td></tr>
+                        <tr><td>2</td><td>Московская обл</td><td>Одинцово</td><td>Одинцовский</td><td>2020-2024</td><td class="text-success">+8.7%</td><td>11.2‰</td><td>9.1‰</td><td class="text-success">+2.1‰</td><td class="text-success">+6.6‰</td></tr>
+                        <tr><td>3</td><td>Ленинградская обл</td><td>Кудрово</td><td>Всеволожский</td><td>2020-2024</td><td class="text-success">+11.5%</td><td>10.8‰</td><td>7.5‰</td><td class="text-success">+3.3‰</td><td class="text-success">+8.2‰</td></tr>
+                        <tr><td>4</td><td>Краснодарский край</td><td>Сочи</td><td>Сочи</td><td>2020-2024</td><td class="text-success">+5.3%</td><td>9.5‰</td><td>8.8‰</td><td class="text-success">+0.7‰</td><td class="text-success">+4.6‰</td></tr>
+                        <tr><td>5</td><td>Новосибирская обл</td><td>Новосибирск</td><td>Новосибирский</td><td>2020-2024</td><td class="text-success">+3.2%</td><td>10.2‰</td><td>9.5‰</td><td class="text-success">+0.7‰</td><td class="text-success">+2.5‰</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Данные для таблицы
+const fullData = [
+    { id: 1, subject: "Московская обл", municipality: "Красногорск", district: "Красногорский", period: "2020-2024", growth: "+15.2%", birth: "12.5", death: "8.2", natural: "+4.3", migration: "+10.9" },
+    { id: 2, subject: "Московская обл", municipality: "Одинцово", district: "Одинцовский", period: "2020-2024", growth: "+8.7%", birth: "11.2", death: "9.1", natural: "+2.1", migration: "+6.6" },
+    { id: 3, subject: "Ленинградская обл", municipality: "Кудрово", district: "Всеволожский", period: "2020-2024", growth: "+11.5%", birth: "10.8", death: "7.5", natural: "+3.3", migration: "+8.2" },
+    { id: 4, subject: "Краснодарский край", municipality: "Сочи", district: "Сочи", period: "2020-2024", growth: "+5.3%", birth: "9.5", death: "8.8", natural: "+0.7", migration: "+4.6" },
+    { id: 5, subject: "Новосибирская обл", municipality: "Новосибирск", district: "Новосибирский", period: "2020-2024", growth: "+3.2%", birth: "10.2", death: "9.5", natural: "+0.7", migration: "+2.5" }
+];
+
+const growthData = [
+    { id: 1, name: "Красногорск", growth: "+15.2%" },
+    { id: 2, name: "Сколково", growth: "+12.8%" },
+    { id: 3, name: "Кудрово", growth: "+11.5%" },
+    { id: 4, name: "Южный", growth: "+9.3%" },
+    { id: 5, name: "Северный", growth: "+7.8%" }
+];
+
+const declineData = [
+    { id: 1, name: "Старый город", growth: "-8.5%" },
+    { id: 2, name: "Заводской", growth: "-6.2%" },
+    { id: 3, name: "Северный", growth: "-4.1%" },
+    { id: 4, name: "Восточный", growth: "-3.5%" },
+    { id: 5, name: "Приозерский", growth: "-2.8%" }
+];
+
+let currentTop = "growth";
+
+function updateTopList(type) {
+    const data = type === "growth" ? growthData : declineData;
+    const tbody = document.getElementById("topTableBody");
+    if (tbody) {
+        tbody.innerHTML = data.map(item => `
+            <tr>
+                <td>${item.id}</td>
+                <td>${item.name}</td>
+                <td class="${item.growth.includes('+') ? 'text-success' : 'text-danger'} fw-bold">${item.growth}</td>
+            </tr>
+        `).join('');
+    }
+}
+
+document.getElementById("showGrowth")?.addEventListener("click", () => {
+    currentTop = "growth";
+    updateTopList("growth");
+    document.getElementById("showGrowth").style.background = "#667eea";
+    document.getElementById("showGrowth").style.color = "white";
+    document.getElementById("showDecline").style.background = "#e2e8f0";
+    document.getElementById("showDecline").style.color = "#4a5568";
+});
+
+document.getElementById("showDecline")?.addEventListener("click", () => {
+    currentTop = "decline";
+    updateTopList("decline");
+    document.getElementById("showDecline").style.background = "#667eea";
+    document.getElementById("showDecline").style.color = "white";
+    document.getElementById("showGrowth").style.background = "#e2e8f0";
+    document.getElementById("showGrowth").style.color = "#4a5568";
+});
+
+document.getElementById("applyFilters")?.addEventListener("click", () => {
+    const subject = document.getElementById("filterSubject").value;
+    const period = document.getElementById("filterPeriod").value;
+    
+    let filtered = [...fullData];
+    if (subject) filtered = filtered.filter(item => item.subject === subject);
+    if (period) filtered = filtered.filter(item => item.period === period);
+    
+    const tbody = document.getElementById("fullTableBody");
+    if (tbody) {
+        tbody.innerHTML = filtered.map(item => `
+            <tr>
+                <td>${item.id}</td>
+                <td>${item.subject}</td>
+                <td>${item.municipality}</td>
+                <td>${item.district}</td>
+                <td>${item.period}</td>
+                <td class="${item.growth.includes('+') ? 'text-success' : 'text-danger'}">${item.growth}</td>
+                <td>${item.birth}‰</td>
+                <td>${item.death}‰</td>
+                <td class="${item.natural.includes('+') ? 'text-success' : 'text-danger'}">${item.natural}‰</td>
+                <td class="${item.migration.includes('+') ? 'text-success' : 'text-danger'}">${item.migration}‰</td>
+            </tr>
+        `).join('');
+    }
+});
+</script>
