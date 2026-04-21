@@ -1,0 +1,82 @@
+/* Общие стили для сайта */
+body {
+	background: linear-gradient(135deg, #f5f7ff 0%, #f0f2fa 100%);
+	font-family:
+		'Inter',
+		-apple-system,
+		BlinkMacSystemFont,
+		'Segoe UI',
+		sans-serif;
+}
+
+/* Стили для карточек */
+.card {
+	transition:
+		transform 0.3s ease,
+		box-shadow 0.3s ease;
+}
+
+.card:hover {
+	transform: translateY(-4px);
+	box-shadow: 0 20px 30px -15px rgba(102, 126, 234, 0.15) !important;
+}
+
+/* Стили для таблиц */
+.table {
+	vertical-align: middle;
+}
+
+.table-hover tbody tr:hover {
+	background-color: rgba(102, 126, 234, 0.05);
+}
+
+/* Стили для кнопок */
+.btn {
+	transition: all 0.3s ease;
+}
+
+.btn:hover {
+	transform: translateY(-1px);
+	filter: brightness(1.05);
+}
+
+/* Стили для select */
+.form-select:focus {
+	border-color: #667eea;
+	box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+}
+
+/* Анимация для страниц */
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+		transform: translateY(20px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+/* Стили для карты и контейнера поиска */
+[class*='ymaps-2-1-79-searchbox'] {
+	border-radius: 12px !important;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+	border: none !important;
+}
+
+[class*='ymaps-2-1-79-searchbox-input'] {
+	border-radius: 12px !important;
+	padding: 8px 12px !important;
+	font-size: 14px !important;
+}
+
+[class*='ymaps-2-1-79-suggest'] {
+	border-radius: 12px !important;
+	margin-top: 5px !important;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+}
+
+.main-content {
+	animation: fadeIn 0.5s ease-out;
+}
