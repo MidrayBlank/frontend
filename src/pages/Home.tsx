@@ -1,11 +1,10 @@
 import { Header } from '@/widgets';
 
 export function Home() {
-	const a: number = 10;
+	const a: number = 10121;
 	return (
 		<>
-			<Header />
-			{a == 10 ? <p>Yes</p> : <p>No</p>}
+			<Header count={a} cn="test" />
 			<div className="">test</div>
 		</>
 	);

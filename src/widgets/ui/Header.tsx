@@ -1,11 +1,11 @@
-export function Header() {
-	
+import type { HeaderProps } from '../models';
 
+export function Header({ count, cn }: HeaderProps) {
 	return (
 		<>
 			{/* <!-- Шапка сайта (адаптивная под тему) --> */}
 			<nav
-				className="navbar navbar-expand-lg shadow-sm fixed-top"
+				className={`navbar navbar-expand-lg shadow-sm fixed-top ${cn}`}
 				style={{
 					background: 'var(--card-bg, #0B2347)',
 					borderBottom: '1px solid var(--border-1, rgba(84,138,255,0.18))',
@@ -50,6 +50,7 @@ export function Header() {
 					>
 						<span className="navbar-toggler-icon"></span>
 					</button>
+					<p>{count}</p>
 				</div>
 				{/* <div className="collapse navbar-collapse" id="navbarNav">
 						<ul className="navbar-nav mx-auto" style="gap: 2rem;">
