@@ -1,254 +1,575 @@
-<div class="container py-4">
-    <!-- Заголовок страницы -->
-    <div class="row mb-4">
-        <div class="col-12 text-center">
-            <h1 style="font-weight: 300; color: #4a5568; letter-spacing: -0.5px;">
-                <i class="fas fa-chart-line me-2" style="color: #667eea;"></i>
-                Мониторинг популяции
-            </h1>
-            <p style="color: #718096; font-weight: 300;">Анализ численности населения по регионам России</p>
-        </div>
-    </div>
+<!DOCTYPE html>
+<!-- 
+    Страница мониторинга с расширенным дашбордом:
+    - часы/погода
+    - суточное потребление ресурсов
+    - количество многоквартирных домов
+    - тепловая карта, топ-5, таблица с фильтрами
+-->
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Midray – Мониторинг и ресурсы</title>
+    <!-- Bootstrap 5 + иконки + шрифты -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Яндекс.Карты (для тепловой карты) -->
+    <script src="https://api-maps.yandex.ru/2.1/?apikey=9d250a3e-cd83-4721-b291-045b7c7a21f7&lang=ru_RU" type="text/javascript"></script>
+    <style>
+        /* ---------- CSS-переменные (тёмная тема по умолчанию) ---------- */
+        :root {
+            --bg-900: #07162E;
+            --bg-800: #0B2347;
+            --bg-700: #12386C;
+            --primary-500: #1E74FF;
+            --primary-400: #4EA1FF;
+            --cyan-500: #19D7FF;
+            --cyan-400: #67E7FF;
+            --teal-500: #13C6B5;
+            --green-500: #39E58C;
+            --yellow-500: #FFC84A;
+            --orange-500: #FF9A3D;
+            --red-500: #FF5B6E;
+            --text-100: #F4F8FF;
+            --text-300: #A9B8D6;
+            --text-500: #6F82A8;
+            --border-1: rgba(84, 138, 255, 0.18);
+            --shadow-1: 0 12px 32px rgba(0, 0, 0, 0.35);
+            --card-bg: linear-gradient(180deg, var(--bg-800), #091B36);
+            --body-bg: var(--bg-900);
+            --body-color: var(--text-100);
+            --card-border: 1px solid var(--border-1);
+        }
 
-    <!-- Тепловая карта и топ 5 -->
-    <div class="row mb-4">
-        <!-- Тепловая карта -->
-        <div class="col-md-8">
-            <div class="card shadow-sm border-0" style="border-radius: 20px; background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 100%);">
-                <div class="card-body p-4">
-                    <h5 class="mb-3" style="font-weight: 400; color: #4a5568;">
-                        <i class="fas fa-map me-2" style="color: #667eea;"></i>
-                        Тепловая карта плотности населения России
-                    </h5>
-                    <div class="heatmap-container" style="background: #f0f2f5; border-radius: 16px; padding: 20px; min-height: 400px;">
-                        <!-- Здесь будет тепловая карта -->
-                        <svg width="100%" height="400" viewBox="0 0 800 400" style="background: linear-gradient(135deg, #f0f2f5 0%, #e8ebf0 100%); border-radius: 12px;">
-                            <!-- Заглушка для тепловой карты -->
-                            <rect x="50" y="50" width="700" height="250" fill="#e2e8f0" rx="10" opacity="0.5"/>
-                            <text x="400" y="180" text-anchor="middle" fill="#718096" font-size="16" font-weight="300">
-                                🗺️ Здесь будет интерактивная тепловая карта России
-                            </text>
-                            <text x="400" y="210" text-anchor="middle" fill="#a0aec0" font-size="12" font-weight="300">
-                                (цветовая градация от красного к голубому)
-                            </text>
-                            
-                            <!-- Пример регионов на карте -->
-                            <rect x="100" y="120" width="60" height="40" fill="#ff0000" opacity="0.7" rx="4"/>
-                            <text x="130" y="115" text-anchor="middle" fill="#4a5568" font-size="10">Москва</text>
-                            
-                            <rect x="200" y="140" width="60" height="40" fill="#ff4500" opacity="0.7" rx="4"/>
-                            <text x="230" y="135" text-anchor="middle" fill="#4a5568" font-size="10">СПБ</text>
-                            
-                            <rect x="350" y="160" width="60" height="40" fill="#ff8c00" opacity="0.7" rx="4"/>
-                            <text x="380" y="155" text-anchor="middle" fill="#4a5568" font-size="10">МО</text>
-                            
-                            <rect x="500" y="180" width="60" height="40" fill="#ffd700" opacity="0.7" rx="4"/>
-                            <text x="530" y="175" text-anchor="middle" fill="#4a5568" font-size="10">Краснодар</text>
-                            
-                            <rect x="600" y="200" width="60" height="40" fill="#90ee90" opacity="0.7" rx="4"/>
-                            <text x="630" y="195" text-anchor="middle" fill="#4a5568" font-size="10">Новосибирск</text>
-                            
-                            <!-- Легенда -->
-                            <rect x="100" y="300" width="20" height="20" fill="#ff0000" rx="3"/>
-                            <text x="130" y="315" fill="#4a5568" font-size="11">Высокая</text>
-                            
-                            <rect x="220" y="300" width="20" height="20" fill="#ff8c00" rx="3"/>
-                            <text x="250" y="315" fill="#4a5568" font-size="11">Средняя</text>
-                            
-                            <rect x="340" y="300" width="20" height="20" fill="#ffd700" rx="3"/>
-                            <text x="370" y="315" fill="#4a5568" font-size="11">Низкая</text>
-                            
-                            <rect x="460" y="300" width="20" height="20" fill="#90ee90" rx="3"/>
-                            <text x="490" y="315" fill="#4a5568" font-size="11">Очень низкая</text>
-                            
-                            <rect x="600" y="300" width="20" height="20" fill="#87ceeb" rx="3"/>
-                            <text x="630" y="315" fill="#4a5568" font-size="11">Минимальная</text>
-                        </svg>
+        /* Светлая тема */
+        body.light-theme {
+            --bg-900: #eef2f9;
+            --bg-800: #ffffff;
+            --bg-700: #f8fafd;
+            --primary-500: #1E74FF;
+            --primary-400: #4EA1FF;
+            --cyan-500: #0b8ea8;
+            --cyan-400: #2bb0cc;
+            --green-500: #2c7a47;
+            --red-500: #e74c3c;
+            --text-100: #1a2c3e;
+            --text-300: #2c3e50;
+            --text-500: #5d6e85;
+            --border-1: rgba(0, 0, 0, 0.08);
+            --shadow-1: 0 12px 32px rgba(0, 0, 0, 0.08);
+            --card-bg: #ffffff;
+            --body-bg: #eef2f9;
+            --body-color: #1a2c3e;
+            --card-border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        body {
+            background: var(--body-bg);
+            color: var(--body-color);
+            transition: background 0.2s, color 0.2s;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            padding: 20px;
+        }
+
+        /* Карточки (общий стиль) */
+        .dashboard-card {
+            background: var(--card-bg);
+            border-radius: 28px;
+            box-shadow: var(--shadow-1);
+            padding: 1.2rem 1.5rem;
+            transition: all 0.2s ease;
+            height: 100%;
+            border: var(--card-border);
+        }
+        .dashboard-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 35px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Часы */
+        .time-digits {
+            font-size: 2.5rem;
+            font-weight: 700;
+            font-family: monospace;
+            letter-spacing: 2px;
+            color: var(--cyan-500);
+            line-height: 1.2;
+        }
+        /* Ресурсы */
+        .resource-number {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--primary-400);
+        }
+        .stat-change {
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 4px 8px;
+            border-radius: 40px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .stat-up {
+            background: rgba(57, 229, 140, 0.18);
+            color: var(--green-500);
+        }
+        .stat-down {
+            background: rgba(255, 91, 110, 0.18);
+            color: var(--red-500);
+        }
+        .resource-icon {
+            font-size: 2rem;
+            width: 50px;
+            text-align: center;
+            color: var(--cyan-400);
+        }
+        /* Дома */
+        .house-number {
+            font-size: 2.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--cyan-500), var(--primary-500));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        /* Таблица и фильтры (адаптация под тёмную тему) */
+        .table {
+            color: var(--body-color);
+        }
+        .table-hover tbody tr:hover {
+            background-color: rgba(102, 126, 234, 0.1);
+        }
+        .form-select, .form-control {
+            background-color: var(--bg-800);
+            border-color: var(--border-1);
+            color: var(--body-color);
+        }
+        .form-select:focus, .form-control:focus {
+            border-color: var(--primary-500);
+            box-shadow: 0 0 0 0.2rem rgba(30, 116, 255, 0.25);
+        }
+        /* Кнопка темы */
+        .theme-switch {
+            background: var(--bg-700);
+            border: none;
+            color: var(--text-100);
+            border-radius: 40px;
+            padding: 6px 14px;
+            transition: 0.2s;
+            cursor: pointer;
+        }
+        .theme-switch:hover {
+            background: var(--primary-500);
+        }
+        /* Карта */
+        #map {
+            width: 100%;
+            height: 500px;
+            border-radius: 20px;
+            background: #1a2c3e;
+        }
+        @media (max-width: 768px) {
+            .time-digits { font-size: 1.6rem; }
+            .resource-number { font-size: 1.3rem; }
+            .house-number { font-size: 2rem; }
+            .dashboard-card { padding: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <!-- ========== ВЕРХНЯЯ СТРОКА: часы, дата, погода, переключатель темы ========== -->
+        <div class="row mb-4 align-items-center">
+            <div class="col-md-8">
+                <div class="dashboard-card d-flex flex-wrap align-items-center justify-content-between">
+                    <div>
+                        <div class="time-digits" id="currentTime">-- дн --:--:--</div>
+                        <div class="small" id="dateInfo" style="color: var(--text-300);">--, -- -- ----</div>
+                    </div>
+                    <div class="vr mx-3 d-none d-md-block" style="height: 50px;"></div>
+                    <div id="weatherBlock">
+                        <!-- динамически через JS -->
                     </div>
                 </div>
             </div>
+            <div class="col-md-4 text-end">
+                <button id="themeToggle" class="theme-switch"><i class="fas fa-moon me-2"></i>Тёмная тема</button>
+            </div>
         </div>
-        
-        <!-- Топ 5 муниципалитетов -->
-        <div class="col-md-4">
-            <div class="card shadow-sm border-0" style="border-radius: 20px; background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 100%);">
-                <div class="card-body p-4">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h5 class="mb-0" style="font-weight: 400; color: #4a5568;">
-                            <i class="fas fa-trophy me-2" style="color: #667eea;"></i>
-                            Топ 5 муниципалитетов
-                        </h5>
-                        <div class="btn-group">
-                            <button class="btn btn-sm" id="showGrowth" style="background: #667eea; color: white; border-radius: 20px;">📈 Рост</button>
-                            <button class="btn btn-sm" id="showDecline" style="background: #e2e8f0; color: #4a5568; border-radius: 20px;">📉 Снижение</button>
+
+        <!-- ========== БЛОК РЕСУРСЫ И ДОМА ========== -->
+        <div class="row g-4 mb-5">
+            <!-- Левая часть: 4 ресурса -->
+            <div class="col-lg-8">
+                <div class="row g-4">
+                    <!-- Газ -->
+                    <div class="col-md-6">
+                        <div class="dashboard-card">
+                            <div class="d-flex justify-content-between">
+                                <i class="fas fa-fire resource-icon"></i>
+                                <div class="text-end">
+                                    <div class="resource-number" id="gasValue">1245.6</div>
+                                    <div class="small">тыс. м³</div>
+                                </div>
+                            </div>
+                            <div class="mt-2 d-flex justify-content-between">
+                                <span>Природный газ</span>
+                                <span id="gasChange" class="stat-change stat-up"><i class="fas fa-arrow-up"></i> +2.3%</span>
+                            </div>
+                            <div class="mt-1 small text-muted"><i class="fas fa-chart-line"></i> суточное потребление</div>
                         </div>
                     </div>
-                    <div id="topList">
-                        <table class="table table-hover" style="font-weight: 300;">
-                            <thead>
-                                <tr><th>#</th><th>Муниципалитет</th><th>Динамика</th></tr>
-                            </thead>
-                            <tbody id="topTableBody">
-                                <tr><td>1</td><td>Красногорск</td><td class="text-success fw-bold">+15.2%</td></tr>
-                                <tr><td>2</td><td>Сколково</td><td class="text-success fw-bold">+12.8%</td></tr>
-                                <tr><td>3</td><td>Кудрово</td><td class="text-success fw-bold">+11.5%</td></tr>
-                                <tr><td>4</td><td>Южный</td><td class="text-success fw-bold">+9.3%</td></tr>
-                                <tr><td>5</td><td>Северный</td><td class="text-success fw-bold">+7.8%</td></tr>
-                            </tbody>
+                    <!-- Электричество -->
+                    <div class="col-md-6">
+                        <div class="dashboard-card">
+                            <div class="d-flex justify-content-between">
+                                <i class="fas fa-bolt resource-icon"></i>
+                                <div class="text-end">
+                                    <div class="resource-number" id="powerValue">348.2</div>
+                                    <div class="small">МВт·ч</div>
+                                </div>
+                            </div>
+                            <div class="mt-2 d-flex justify-content-between">
+                                <span>Электроэнергия</span>
+                                <span id="powerChange" class="stat-change stat-down"><i class="fas fa-arrow-down"></i> -0.7%</span>
+                            </div>
+                            <div class="mt-1 small text-muted"><i class="fas fa-chart-line"></i> суточное потребление</div>
+                        </div>
+                    </div>
+                    <!-- Тепло -->
+                    <div class="col-md-6">
+                        <div class="dashboard-card">
+                            <div class="d-flex justify-content-between">
+                                <i class="fas fa-temperature-high resource-icon"></i>
+                                <div class="text-end">
+                                    <div class="resource-number" id="heatValue">892.4</div>
+                                    <div class="small">Гкал</div>
+                                </div>
+                            </div>
+                            <div class="mt-2 d-flex justify-content-between">
+                                <span>Тепло</span>
+                                <span id="heatChange" class="stat-change stat-up"><i class="fas fa-arrow-up"></i> +1.1%</span>
+                            </div>
+                            <div class="mt-1 small text-muted"><i class="fas fa-chart-line"></i> суточное потребление</div>
+                        </div>
+                    </div>
+                    <!-- Вода -->
+                    <div class="col-md-6">
+                        <div class="dashboard-card">
+                            <div class="d-flex justify-content-between">
+                                <i class="fas fa-water resource-icon"></i>
+                                <div class="text-end">
+                                    <div class="resource-number" id="waterValue">2345.0</div>
+                                    <div class="small">м³</div>
+                                </div>
+                            </div>
+                            <div class="mt-2 d-flex justify-content-between">
+                                <span>Вода</span>
+                                <span id="waterChange" class="stat-change stat-up"><i class="fas fa-arrow-up"></i> +5.2%</span>
+                            </div>
+                            <div class="mt-1 small text-muted"><i class="fas fa-chart-line"></i> суточное потребление</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Правая часть: дома -->
+            <div class="col-lg-4">
+                <div class="dashboard-card h-100 d-flex flex-column justify-content-center text-center">
+                    <i class="fas fa-building fa-3x mb-3" style="color: var(--cyan-400);"></i>
+                    <div class="house-number" id="houseCount">1 247</div>
+                    <div class="mt-2">многоквартирных домов</div>
+                    <div class="mt-2 small text-muted">+12 за месяц</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== ОСНОВНОЙ КОНТЕНТ МОНИТОРИНГА (карта, топ-5, таблица) ========== -->
+        <!-- Карта и топ-5 -->
+        <div class="row mb-4">
+            <div class="col-md-8">
+                <div class="dashboard-card">
+                    <h5 class="mb-3"><i class="fas fa-map me-2" style="color: var(--cyan-500);"></i>Тепловая карта плотности населения</h5>
+                    <div id="map" style="height: 500px; border-radius: 16px;"></div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="dashboard-card">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="mb-0"><i class="fas fa-trophy me-2" style="color: var(--cyan-500);"></i>Топ-5 муниципалитетов</h5>
+                        <div class="btn-group">
+                            <button class="btn btn-sm" id="showGrowth" style="background: var(--primary-500); color:white; border-radius:20px;">📈 Рост</button>
+                            <button class="btn btn-sm" id="showDecline" style="background: var(--bg-700); color: var(--text-100); border-radius:20px;">📉 Снижение</button>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead><tr><th>#</th><th>Муниципалитет</th><th>Динамика</th></tr></thead>
+                            <tbody id="topTableBody"></tbody>
                         </table>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Полная таблица данных -->
-    <div class="card shadow-sm border-0" style="border-radius: 20px; background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 100%);">
-        <div class="card-body p-4">
-            <h5 class="mb-4" style="font-weight: 400; color: #4a5568;">
-                <i class="fas fa-table me-2" style="color: #667eea;"></i>
-                Детальные данные мониторинга
-            </h5>
-            
-            <!-- Фильтры -->
+        <!-- Фильтры и таблица данных -->
+        <div class="dashboard-card">
+            <h5 class="mb-4"><i class="fas fa-table me-2" style="color: var(--cyan-500);"></i>Детальные данные мониторинга</h5>
             <div class="row mb-4">
-                <div class="col-md-4">
-                    <label class="form-label" style="color: #4a5568; font-weight: 300;">Субъект РФ</label>
-                    <select id="filterSubject" class="form-select" style="border-radius: 12px; border-color: #e2e8f0;">
+                <div class="col-md-3">
+                    <label class="form-label">Субъект РФ</label>
+                    <select id="filterSubject" class="form-select">
                         <option value="">Все</option>
-                        <option value="Московская обл">Московская область</option>
-                        <option value="Ленинградская обл">Ленинградская область</option>
+                        <option value="Московская область">Московская область</option>
+                        <option value="Ленинградская область">Ленинградская область</option>
                         <option value="Краснодарский край">Краснодарский край</option>
+                        <option value="Новосибирская область">Новосибирская область</option>
                     </select>
                 </div>
-                <div class="col-md-4">
-                    <label class="form-label" style="color: #4a5568; font-weight: 300;">Период анализа</label>
-                    <select id="filterPeriod" class="form-select" style="border-radius: 12px; border-color: #e2e8f0;">
+                <div class="col-md-3">
+                    <label class="form-label">Тип МО</label>
+                    <select id="filterType" class="form-select">
                         <option value="">Все</option>
-                        <option value="2020-2024">2020-2024</option>
+                        <option value="городской округ">Городской округ</option>
+                        <option value="муниципальный район">Муниципальный район</option>
                     </select>
                 </div>
-                <div class="col-md-4 d-flex align-items-end">
-                    <button id="applyFilters" class="btn w-100" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 12px; padding: 10px;">
-                        <i class="fas fa-filter me-2"></i>Применить фильтры
-                    </button>
+                <div class="col-md-3">
+                    <label class="form-label">Период (год от)</label>
+                    <input type="number" id="periodFrom" class="form-control" value="2020" min="2015" max="2025">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Период (год до)</label>
+                    <input type="number" id="periodTo" class="form-control" value="2024" min="2015" max="2025">
                 </div>
             </div>
-            
-            <!-- Таблица -->
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <button id="applyFilters" class="btn w-100" style="background: var(--primary-500); color:white; border-radius:12px;"><i class="fas fa-filter me-2"></i>Применить фильтры</button>
+                </div>
+                <div class="col-md-6">
+                    <button id="resetFilters" class="btn w-100" style="background: var(--bg-700); color: var(--text-100); border-radius:12px;"><i class="fas fa-undo-alt me-2"></i>Сбросить фильтры</button>
+                </div>
+            </div>
             <div class="table-responsive">
-                <table class="table table-hover" style="font-weight: 300;">
-                    <thead style="background: #f8f9ff;">
-                        <tr>
-                            <th>ID</th>
-                            <th>Субъект РФ</th>
-                            <th>Муниципалитет</th>
-                            <th>Городской округ</th>
-                            <th>Период</th>
-                            <th>Динамика</th>
-                            <th>Рождаемость</th>
-                            <th>Смертность</th>
-                            <th>Ест.прирост</th>
-                            <th>Миграция</th>
-                        </tr>
+                <table class="table table-hover">
+                    <thead style="background: var(--bg-800);">
+                        <tr><th>ID</th><th>Субъект РФ</th><th>Муниципалитет</th><th>Тип МО</th><th>Период</th><th>Динамика</th><th>Рождаемость</th><th>Смертность</th><th>Ест.прирост</th><th>Миграция</th></tr>
                     </thead>
-                    <tbody id="fullTableBody">
-                        <tr><td>1</td><td>Московская обл</td><td>Красногорск</td><td>Красногорский</td><td>2020-2024</td><td class="text-success">+15.2%</td><td>12.5‰</td><td>8.2‰</td><td class="text-success">+4.3‰</td><td class="text-success">+10.9‰</td></tr>
-                        <tr><td>2</td><td>Московская обл</td><td>Одинцово</td><td>Одинцовский</td><td>2020-2024</td><td class="text-success">+8.7%</td><td>11.2‰</td><td>9.1‰</td><td class="text-success">+2.1‰</td><td class="text-success">+6.6‰</td></tr>
-                        <tr><td>3</td><td>Ленинградская обл</td><td>Кудрово</td><td>Всеволожский</td><td>2020-2024</td><td class="text-success">+11.5%</td><td>10.8‰</td><td>7.5‰</td><td class="text-success">+3.3‰</td><td class="text-success">+8.2‰</td></tr>
-                        <tr><td>4</td><td>Краснодарский край</td><td>Сочи</td><td>Сочи</td><td>2020-2024</td><td class="text-success">+5.3%</td><td>9.5‰</td><td>8.8‰</td><td class="text-success">+0.7‰</td><td class="text-success">+4.6‰</td></tr>
-                        <tr><td>5</td><td>Новосибирская обл</td><td>Новосибирск</td><td>Новосибирский</td><td>2020-2024</td><td class="text-success">+3.2%</td><td>10.2‰</td><td>9.5‰</td><td class="text-success">+0.7‰</td><td class="text-success">+2.5‰</td></tr>
-                    </tbody>
+                    <tbody id="fullTableBody"></tbody>
                 </table>
             </div>
         </div>
     </div>
-</div>
 
-<script>
-// Данные для таблицы
-const fullData = [
-    { id: 1, subject: "Московская обл", municipality: "Красногорск", district: "Красногорский", period: "2020-2024", growth: "+15.2%", birth: "12.5", death: "8.2", natural: "+4.3", migration: "+10.9" },
-    { id: 2, subject: "Московская обл", municipality: "Одинцово", district: "Одинцовский", period: "2020-2024", growth: "+8.7%", birth: "11.2", death: "9.1", natural: "+2.1", migration: "+6.6" },
-    { id: 3, subject: "Ленинградская обл", municipality: "Кудрово", district: "Всеволожский", period: "2020-2024", growth: "+11.5%", birth: "10.8", death: "7.5", natural: "+3.3", migration: "+8.2" },
-    { id: 4, subject: "Краснодарский край", municipality: "Сочи", district: "Сочи", period: "2020-2024", growth: "+5.3%", birth: "9.5", death: "8.8", natural: "+0.7", migration: "+4.6" },
-    { id: 5, subject: "Новосибирская обл", municipality: "Новосибирск", district: "Новосибирский", period: "2020-2024", growth: "+3.2%", birth: "10.2", death: "9.5", natural: "+0.7", migration: "+2.5" }
-];
+    <script>
+        // ---------- ДАННЫЕ ДЛЯ ТАБЛИЦЫ И ТОП-5 (полностью сохранены) ----------
+        const fullData = [
+            { id:1, subject:"Московская область", municipality:"Красногорск", type:"городской округ", period:"2020-2024", growth:"+15.2%", birth:"12.5", death:"8.2", natural:"+4.3", migration:"+10.9" },
+            { id:2, subject:"Московская область", municipality:"Одинцово", type:"городской округ", period:"2020-2024", growth:"+8.7%", birth:"11.2", death:"9.1", natural:"+2.1", migration:"+6.6" },
+            { id:3, subject:"Ленинградская область", municipality:"Кудрово", type:"городской округ", period:"2020-2024", growth:"+11.5%", birth:"10.8", death:"7.5", natural:"+3.3", migration:"+8.2" },
+            { id:4, subject:"Краснодарский край", municipality:"Сочи", type:"городской округ", period:"2020-2024", growth:"+5.3%", birth:"9.5", death:"8.8", natural:"+0.7", migration:"+4.6" },
+            { id:5, subject:"Новосибирская область", municipality:"Новосибирск", type:"городской округ", period:"2020-2024", growth:"+3.2%", birth:"10.2", death:"9.5", natural:"+0.7", migration:"+2.5" },
+            { id:6, subject:"Московская область", municipality:"Балашиха", type:"городской округ", period:"2021-2025", growth:"+9.5%", birth:"11.5", death:"8.9", natural:"+2.6", migration:"+6.9" },
+            { id:7, subject:"Ленинградская область", municipality:"Гатчинский район", type:"муниципальный район", period:"2019-2023", growth:"+2.8%", birth:"9.8", death:"10.5", natural:"-0.7", migration:"+3.5" }
+        ];
+        const growthData = [
+            { id:1, name:"Красногорск", growth:"+15.2%" }, { id:2, name:"Сколково", growth:"+12.8%" },
+            { id:3, name:"Кудрово", growth:"+11.5%" }, { id:4, name:"Южный", growth:"+9.3%" }, { id:5, name:"Северный", growth:"+7.8%" }
+        ];
+        const declineData = [
+            { id:1, name:"Старый город", growth:"-8.5%" }, { id:2, name:"Заводской", growth:"-6.2%" },
+            { id:3, name:"Северный", growth:"-4.1%" }, { id:4, name:"Восточный", growth:"-3.5%" }, { id:5, name:"Приозерский", growth:"-2.8%" }
+        ];
 
-const growthData = [
-    { id: 1, name: "Красногорск", growth: "+15.2%" },
-    { id: 2, name: "Сколково", growth: "+12.8%" },
-    { id: 3, name: "Кудрово", growth: "+11.5%" },
-    { id: 4, name: "Южный", growth: "+9.3%" },
-    { id: 5, name: "Северный", growth: "+7.8%" }
-];
+        let currentTop = "growth";
+        function updateTopList(type) {
+            const data = type === "growth" ? growthData : declineData;
+            document.getElementById("topTableBody").innerHTML = data.map(item => `
+                <tr><td>${item.id}</td><td>${item.name}</td><td class="${item.growth.includes('+') ? 'text-success' : 'text-danger'} fw-bold">${item.growth}</td></tr>
+            `).join('');
+        }
+        function filterTable() {
+            const subject = document.getElementById("filterSubject").value;
+            const type = document.getElementById("filterType").value;
+            const from = parseInt(document.getElementById("periodFrom").value);
+            const to = parseInt(document.getElementById("periodTo").value);
+            let filtered = fullData.filter(item => {
+                if(subject && item.subject !== subject) return false;
+                if(type && item.type !== type) return false;
+                const match = item.period.match(/(\d{4})-(\d{4})/);
+                if(match) {
+                    let start = parseInt(match[1]), end = parseInt(match[2]);
+                    return !(start > to || end < from);
+                }
+                return true;
+            });
+            document.getElementById("fullTableBody").innerHTML = filtered.map(item => `
+                <tr>
+                    <td>${item.id}</td><td>${item.subject}</td><td>${item.municipality}</td><td>${item.type}</td><td>${item.period}</td>
+                    <td class="${item.growth.includes('+') ? 'text-success' : 'text-danger'}">${item.growth}</td>
+                    <td>${item.birth}‰</td><td>${item.death}‰</td>
+                    <td class="${item.natural.includes('+') ? 'text-success' : 'text-danger'}">${item.natural}‰</td>
+                    <td class="${item.migration.includes('+') ? 'text-success' : 'text-danger'}">${item.migration}‰</td>
+                </tr>
+            `).join('');
+        }
+        function resetFilters() {
+            document.getElementById("filterSubject").value = "";
+            document.getElementById("filterType").value = "";
+            document.getElementById("periodFrom").value = "2020";
+            document.getElementById("periodTo").value = "2024";
+            filterTable();
+        }
 
-const declineData = [
-    { id: 1, name: "Старый город", growth: "-8.5%" },
-    { id: 2, name: "Заводской", growth: "-6.2%" },
-    { id: 3, name: "Северный", growth: "-4.1%" },
-    { id: 4, name: "Восточный", growth: "-3.5%" },
-    { id: 5, name: "Приозерский", growth: "-2.8%" }
-];
+        // ---------- ЧАСЫ, ДАТА, ПОГОДА ----------
+        function updateTime() {
+            const now = new Date();
+            const start = new Date(now.getFullYear(),0,0);
+            const dayOfYear = Math.floor((now - start) / (1000*60*60*24));
+            const timeStr = now.toLocaleTimeString('ru-RU');
+            document.getElementById("currentTime").innerHTML = `${dayOfYear} дн ${timeStr}`;
+            const weekdays = ['Воскресенье','Понедельник','Вторник','Среда','Четверг','Пятница','Суббота'];
+            const months = ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
+            document.getElementById("dateInfo").innerHTML = `${weekdays[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+        }
+        function updateWeather() {
+            const temp = (15 + Math.random() * 10).toFixed(1);
+            const wind = (2 + Math.random() * 6).toFixed(1);
+            const pressure = 745 + Math.floor(Math.random() * 20);
+            const hour = new Date().getHours();
+            const icon = (hour > 6 && hour < 20) ? 'fa-sun' : 'fa-moon';
+            document.getElementById("weatherBlock").innerHTML = `
+                <div class="d-flex align-items-center gap-3">
+                    <i class="fas ${icon} fa-2x" style="color: var(--cyan-400);"></i>
+                    <div><span class="fw-bold fs-3">${temp}</span> °C</div>
+                    <div class="vr"></div>
+                    <div><i class="fas fa-wind"></i> ${wind} м/с</div>
+                    <div><i class="fas fa-tachometer-alt"></i> ${pressure} мм</div>
+                </div>
+            `;
+        }
 
-let currentTop = "growth";
+        // ---------- РЕСУРСЫ (симуляция) ----------
+        let resources = {
+            gas: { val:1245.6, chg:2.3, trend:'up', unit:'тыс. м³' },
+            power: { val:348.2, chg:-0.7, trend:'down', unit:'МВт·ч' },
+            heat: { val:892.4, chg:1.1, trend:'up', unit:'Гкал' },
+            water: { val:2345.0, chg:5.2, trend:'up', unit:'м³' }
+        };
+        function updateResourcesUI() {
+            document.getElementById("gasValue").innerText = resources.gas.val.toFixed(1);
+            document.getElementById("gasChange").innerHTML = `<i class="fas fa-arrow-${resources.gas.trend==='up'?'up':'down'}"></i> ${resources.gas.chg>0?'+':''}${resources.gas.chg}%`;
+            document.getElementById("gasChange").className = `stat-change ${resources.gas.trend==='up'?'stat-up':'stat-down'}`;
+            
+            document.getElementById("powerValue").innerText = resources.power.val.toFixed(1);
+            document.getElementById("powerChange").innerHTML = `<i class="fas fa-arrow-${resources.power.trend==='up'?'up':'down'}"></i> ${resources.power.chg>0?'+':''}${resources.power.chg}%`;
+            document.getElementById("powerChange").className = `stat-change ${resources.power.trend==='up'?'stat-up':'stat-down'}`;
+            
+            document.getElementById("heatValue").innerText = resources.heat.val.toFixed(1);
+            document.getElementById("heatChange").innerHTML = `<i class="fas fa-arrow-${resources.heat.trend==='up'?'up':'down'}"></i> ${resources.heat.chg>0?'+':''}${resources.heat.chg}%`;
+            document.getElementById("heatChange").className = `stat-change ${resources.heat.trend==='up'?'stat-up':'stat-down'}`;
+            
+            document.getElementById("waterValue").innerText = resources.water.val.toFixed(1);
+            document.getElementById("waterChange").innerHTML = `<i class="fas fa-arrow-${resources.water.trend==='up'?'up':'down'}"></i> ${resources.water.chg>0?'+':''}${resources.water.chg}%`;
+            document.getElementById("waterChange").className = `stat-change ${resources.water.trend==='up'?'stat-up':'stat-down'}`;
+        }
+        function randomizeResources() {
+            resources.gas.val += (Math.random()-0.5)*5;
+            resources.gas.val = Math.max(800, resources.gas.val);
+            resources.gas.chg = (Math.random()*4-1).toFixed(1);
+            resources.gas.trend = parseFloat(resources.gas.chg) >= 0 ? 'up' : 'down';
+            
+            resources.power.val += (Math.random()-0.5)*3;
+            resources.power.val = Math.max(200, resources.power.val);
+            resources.power.chg = (Math.random()*3-1.5).toFixed(1);
+            resources.power.trend = parseFloat(resources.power.chg) >= 0 ? 'up' : 'down';
+            
+            resources.heat.val += (Math.random()-0.5)*4;
+            resources.heat.val = Math.max(600, resources.heat.val);
+            resources.heat.chg = (Math.random()*2.5-0.5).toFixed(1);
+            resources.heat.trend = parseFloat(resources.heat.chg) >= 0 ? 'up' : 'down';
+            
+            resources.water.val += (Math.random()-0.5)*12;
+            resources.water.val = Math.max(1800, resources.water.val);
+            resources.water.chg = (Math.random()*6-2).toFixed(1);
+            resources.water.trend = parseFloat(resources.water.chg) >= 0 ? 'up' : 'down';
+            updateResourcesUI();
+        }
+        let houseCount = 1247;
+        function updateHouse() {
+            houseCount += Math.floor(Math.random() * 3);
+            document.getElementById("houseCount").innerText = houseCount.toLocaleString();
+        }
 
-function updateTopList(type) {
-    const data = type === "growth" ? growthData : declineData;
-    const tbody = document.getElementById("topTableBody");
-    if (tbody) {
-        tbody.innerHTML = data.map(item => `
-            <tr>
-                <td>${item.id}</td>
-                <td>${item.name}</td>
-                <td class="${item.growth.includes('+') ? 'text-success' : 'text-danger'} fw-bold">${item.growth}</td>
-            </tr>
-        `).join('');
-    }
-}
+        // ---------- КАРТА (Яндекс.Карты с тепловым слоем) ----------
+        let map;
+        function initMap() {
+            if(typeof ymaps === 'undefined') return;
+            map = new ymaps.Map("map", { center: [62.0, 100.0], zoom: 3, controls: ["zoomControl","fullscreenControl"] });
+            // Данные для тепловой карты (пример)
+            const points = [
+                { coords:[55.751244,37.618423], weight:4900 }, // Москва
+                { coords:[59.931058,30.360913], weight:3800 }, // СПБ
+                { coords:[55.755826,37.6173], weight:1600 }, // МО
+                { coords:[45.035470,38.975313], weight:750 }, // Краснодар
+                { coords:[55.030199,82.920430], weight:150 } // Новосибирск
+            ];
+            const heatmap = new ymaps.Heatmap({
+                radius: 30,
+                opacity: 0.7,
+                gradient: { 0.0:'rgba(135,206,235,0.8)', 0.2:'#90EE90', 0.4:'#FFD700', 0.6:'#FF8C42', 0.8:'#FF4500', 1.0:'#FF0000' }
+            });
+            heatmap.setData(points.map(p => ({ coordinates: p.coords, weight: p.weight/1000 })));
+            map.geoObjects.add(heatmap);
+            // поиск
+            const search = new ymaps.control.SearchControl({ options: { noPlacemark:true, useMapBounds:false } });
+            map.controls.add(search);
+            search.events.add('resultselect', e => {
+                search.getResult(e.get('index')).then(res => {
+                    map.setCenter(res.geometry.getCoordinates(), 8, { duration:500 });
+                });
+            });
+        }
+        if(typeof ymaps !== 'undefined') ymaps.ready(initMap);
+        else setTimeout(() => { if(typeof ymaps !== 'undefined') ymaps.ready(initMap); }, 500);
 
-document.getElementById("showGrowth")?.addEventListener("click", () => {
-    currentTop = "growth";
-    updateTopList("growth");
-    document.getElementById("showGrowth").style.background = "#667eea";
-    document.getElementById("showGrowth").style.color = "white";
-    document.getElementById("showDecline").style.background = "#e2e8f0";
-    document.getElementById("showDecline").style.color = "#4a5568";
-});
+        // ---------- ТЕМА ----------
+        function initTheme() {
+            const saved = localStorage.getItem('theme');
+            if(saved === 'light') {
+                document.body.classList.add('light-theme');
+                document.getElementById('themeToggle').innerHTML = '<i class="fas fa-sun me-2"></i>Светлая тема';
+            } else {
+                document.body.classList.remove('light-theme');
+                document.getElementById('themeToggle').innerHTML = '<i class="fas fa-moon me-2"></i>Тёмная тема';
+            }
+        }
+        function toggleTheme() {
+            if(document.body.classList.contains('light-theme')) {
+                document.body.classList.remove('light-theme');
+                localStorage.setItem('theme','dark');
+                document.getElementById('themeToggle').innerHTML = '<i class="fas fa-moon me-2"></i>Тёмная тема';
+            } else {
+                document.body.classList.add('light-theme');
+                localStorage.setItem('theme','light');
+                document.getElementById('themeToggle').innerHTML = '<i class="fas fa-sun me-2"></i>Светлая тема';
+            }
+        }
 
-document.getElementById("showDecline")?.addEventListener("click", () => {
-    currentTop = "decline";
-    updateTopList("decline");
-    document.getElementById("showDecline").style.background = "#667eea";
-    document.getElementById("showDecline").style.color = "white";
-    document.getElementById("showGrowth").style.background = "#e2e8f0";
-    document.getElementById("showGrowth").style.color = "#4a5568";
-});
-
-document.getElementById("applyFilters")?.addEventListener("click", () => {
-    const subject = document.getElementById("filterSubject").value;
-    const period = document.getElementById("filterPeriod").value;
-    
-    let filtered = [...fullData];
-    if (subject) filtered = filtered.filter(item => item.subject === subject);
-    if (period) filtered = filtered.filter(item => item.period === period);
-    
-    const tbody = document.getElementById("fullTableBody");
-    if (tbody) {
-        tbody.innerHTML = filtered.map(item => `
-            <tr>
-                <td>${item.id}</td>
-                <td>${item.subject}</td>
-                <td>${item.municipality}</td>
-                <td>${item.district}</td>
-                <td>${item.period}</td>
-                <td class="${item.growth.includes('+') ? 'text-success' : 'text-danger'}">${item.growth}</td>
-                <td>${item.birth}‰</td>
-                <td>${item.death}‰</td>
-                <td class="${item.natural.includes('+') ? 'text-success' : 'text-danger'}">${item.natural}‰</td>
-                <td class="${item.migration.includes('+') ? 'text-success' : 'text-danger'}">${item.migration}‰</td>
-            </tr>
-        `).join('');
-    }
-});
-</script>
+        // ---------- ЗАПУСК ----------
+        setInterval(updateTime, 1000);
+        setInterval(updateWeather, 60000);
+        setInterval(() => { randomizeResources(); updateHouse(); }, 30000);
+        updateTime(); updateWeather(); updateResourcesUI(); updateTopList('growth'); filterTable();
+        document.getElementById("showGrowth").onclick = () => { currentTop='growth'; updateTopList('growth'); };
+        document.getElementById("showDecline").onclick = () => { currentTop='decline'; updateTopList('decline'); };
+        document.getElementById("applyFilters").onclick = filterTable;
+        document.getElementById("resetFilters").onclick = resetFilters;
+        initTheme();
+        document.getElementById("themeToggle").onclick = toggleTheme;
+    </script>
+</body>
+</html>

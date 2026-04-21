@@ -51,6 +51,25 @@ body {
     }
 }
 
+/* Стили для карты и контейнера поиска */
+[class*="ymaps-2-1-79-searchbox"] {
+    border-radius: 12px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+    border: none !important;
+}
+
+[class*="ymaps-2-1-79-searchbox-input"] {
+    border-radius: 12px !important;
+    padding: 8px 12px !important;
+    font-size: 14px !important;
+}
+
+[class*="ymaps-2-1-79-suggest"] {
+    border-radius: 12px !important;
+    margin-top: 5px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+}
+
 .main-content {
     animation: fadeIn 0.5s ease-out;
 }
