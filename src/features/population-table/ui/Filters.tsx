@@ -41,11 +41,25 @@ export function Filters({
         </div>
         <div className="col-md-3">
           <label className="form-label">Период (год от)</label>
-          <input type="number" className="form-control" value={periodFrom} onChange={e => onPeriodFromChange(parseInt(e.target.value))} min={2015} max={2025} />
+          <input
+            type="number"
+            className="form-control"
+            value={periodFrom}
+            onChange={(e) => onPeriodFromChange(Number(e.target.value))}
+            min={2015}
+            max={2025}
+          />
         </div>
         <div className="col-md-3">
           <label className="form-label">Период (год до)</label>
-          <input type="number" className="form-control" value={periodTo} onChange={e => onPeriodToChange(parseInt(e.target.value))} min={2015} max={2025} />
+          <input
+            type="number"
+            className="form-control"
+            value={periodTo}
+            onChange={(e) => onPeriodToChange(Number(e.target.value))}
+            min={2015}
+            max={2025}
+          />
         </div>
       </div>
       <div className="row mb-4">

@@ -20,6 +20,7 @@ export function AiReport() {
 	return (
 		<>
 			<Header />
+			<main style={{ flex: 1 }}>
 			<div className="container py-4">
 				<div className="text-center mb-4">
 					<button className="btn btn-primary btn-lg" onClick={handleGenerate} disabled={loading}>
@@ -96,6 +97,7 @@ export function AiReport() {
 					</>
 				)}
 			</div>
+			</main>
 			<Footer />
 		</>
 	);
