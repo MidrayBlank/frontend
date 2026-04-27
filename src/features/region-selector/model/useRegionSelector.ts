@@ -1,18 +1,50 @@
-// src/features/region-selector/model/useRegionSelector.ts
-import { useState } from 'react';
-import { regionsList, type RegionName } from './regions';
+import { useEffect, useState } from 'react';
+import { fetchGeo } from '@/shared/api/geoApi';
+import type { UpperMunicipality } from '@/shared/types/russia';
+
+type State =
+	| { status: 'loading' }
+	| { status: 'error'; message: string }
+	| { status: 'ready'; regions: UpperMunicipality[]; selected: UpperMunicipality };
 
 export function useRegionSelector() {
-  const [selectedRegion, setSelectedRegion] = useState<RegionName>(regionsList[0]);
+	const [state, setState] = useState<State>({ status: 'loading' });
 
-  const handleRegionChange = (region: RegionName) => {
-    setSelectedRegion(region);
-    // Здесь позже можно добавить обновление прогноза
-  };
+	useEffect(() => {
+		let mounted = true;
 
-  return {
-    selectedRegion,
-    handleRegionChange,
-    regionsList,
-  };
+		fetchGeo()
+			.then((geo) => {
+				if (!mounted) return;
+
+				const regions = geo.federal_subjects[0]?.upper_municipalities ?? [];
+
+				if (!regions.length) {
+					setState({ status: 'error', message: 'Список регионов пуст' });
+					return;
+				}
+
+				setState({ status: 'ready', regions, selected: regions[0] });
+			})
+			.catch((err: unknown) => {
+				if (!mounted) return;
+				setState({
+					status: 'error',
+					message: err instanceof Error ? err.message : 'Неизвестная ошибка',
+				});
+			});
+
+		return () => {
+			mounted = false;
+		};
+	}, []);
+
+	const handleRegionChange = (code: number) => {
+		if (state.status !== 'ready') return;
+
+		const found = state.regions.find((r) => r.code === code);
+		if (found) setState({ ...state, selected: found });
+	};
+
+	return { state, handleRegionChange };
 }

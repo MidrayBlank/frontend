@@ -41,3 +41,27 @@ export type RussiaData = {
 	geo: RussiaGeoJson;
 	rosstat: RosstatItem[];
 };
+
+// --- GeoApi ---
+export type LowerMunicipality = {
+	name: string;
+	code: number;
+};
+
+export type UpperMunicipality = {
+	name: string;
+	code: number;
+	lower_municipalities: LowerMunicipality[] | null;
+};
+
+export type FederalSubject = {
+	name: string;
+	code: number;
+	upper_municipalities: UpperMunicipality[];
+};
+
+export type GeoResponse = {
+	name: string;
+	code: number;
+	federal_subjects: FederalSubject[];
+};
