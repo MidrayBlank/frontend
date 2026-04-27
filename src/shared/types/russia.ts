@@ -16,6 +16,7 @@ export type RosstatByAge = {
 };
 
 export type RosstatByYear = {
+	year?: number;
 	population?: number;
 	birth?: number;
 	death?: number;

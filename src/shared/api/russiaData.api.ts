@@ -9,8 +9,6 @@ async function fetchJson<T>(url: string): Promise<T> {
 }
 
 export async function loadRussiaData(): Promise<RussiaData> {
-	const years = [2020, 2021, 2022, 2023];
-
 	const raw = await fetchJson<RussiaGeoJson>('/maps/russia.geojson');
 
 	const geo: RussiaGeoJson = {
@@ -29,6 +27,14 @@ export async function loadRussiaData(): Promise<RussiaData> {
 	const rosstat = await fetchJson<RosstatItem[]>(
 		`${API_BASE}/api/v1/rosstat?fields=population&${codes}`,
 	);
+
+	const yearsSet = new Set<number>();
+	for (const item of rosstat) {
+		for (const y of item.by_year) {
+			if (typeof y.year === 'number') yearsSet.add(y.year);
+		}
+	}
+	const years = Array.from(yearsSet).sort((a, b) => a - b);
 
 	return { years, geo, rosstat };
 }

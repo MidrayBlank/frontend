@@ -12,11 +12,11 @@ export function FooterContacts() {
             {socialLinks[0].label}
           </a>
         </li>
-        <li>
+        {/* <li>
           <a href={socialLinks[1].href} className="text-decoration-none" style={{ color: 'var(--text-300, #A9B8D6)' }}>
             <i className={socialLinks[1].icon}></i> {socialLinks[1].label}
           </a>
-        </li>
+        </li> */}
       </ul>
     </div>
   );

@@ -52,12 +52,12 @@ export function Home() {
 					<Filters
 						subject={tempFilters.subject}
 						type={tempFilters.type}
-						periodFrom={tempFilters.periodFrom}
-						periodTo={tempFilters.periodTo}
+						periodFrom={tempFilters.yearFrom}
+						periodTo={tempFilters.yearTo}
 						onSubjectChange={(val) => updateTempFilter('subject', val)}
 						onTypeChange={(val) => updateTempFilter('type', val)}
-						onPeriodFromChange={(val) => updateTempFilter('periodFrom', val)}
-						onPeriodToChange={(val) => updateTempFilter('periodTo', val)}
+						onPeriodFromChange={(val) => updateTempFilter('yearFrom', val)}
+						onPeriodToChange={(val) => updateTempFilter('yearTo', val)}
 						onApply={applyFilters}
 						onReset={resetFilters}
 					/>

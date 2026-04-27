@@ -37,26 +37,28 @@ function interpolateHeat(t: number): string {
 	return `rgb(${rgb[0]} ${rgb[1]} ${rgb[2]})`;
 }
 
+// usePopulationColor.ts — меняем yearIndex на selectedYear
 type Params = {
 	rosstat: RosstatItem[];
-	yearIndex: number;
+	selectedYear: number; // ← был yearIndex
 	hasYears: boolean;
 };
 
-export function usePopulationColor({ rosstat, yearIndex, hasYears }: Params) {
+export function usePopulationColor({ rosstat, selectedYear, hasYears }: Params) {
 	const valueByCode = useMemo(() => {
 		const map = new Map<number, number>();
 		if (!hasYears) return map;
 
 		for (const item of rosstat) {
-			const value = item.by_year[yearIndex]?.population;
+			const yearData = item.by_year.find((y) => y.year === selectedYear); // ← по году
+			const value = yearData?.population;
 			if (typeof value === 'number' && Number.isFinite(value)) {
 				map.set(item.code, value);
 			}
 		}
 
 		return map;
-	}, [rosstat, yearIndex, hasYears]);
+	}, [rosstat, selectedYear, hasYears]);
 
 	const values = useMemo(() => Array.from(valueByCode.values()), [valueByCode]);
 
