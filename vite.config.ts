@@ -11,6 +11,13 @@ export default defineConfig({
 	},
 	server: {
 		allowedHosts: ['midray.ru'],
+		proxy: {
+			'/api': {
+				target: 'https://backend.midray.ru',
+				changeOrigin: true,
+				secure: false,
+			},
+		},
 	},
 	preview: {
 		allowedHosts: ['midray.ru'],
