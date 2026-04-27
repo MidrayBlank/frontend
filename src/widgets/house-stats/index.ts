@@ -1,0 +1,1 @@
+export { HouseStats } from './ui/HouseStats';
