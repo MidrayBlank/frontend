@@ -13,7 +13,7 @@ export function MapTooltip({ name, code, value, x, y }: Props) {
 				position: 'absolute',
 				left: x + 12,
 				top: y + 12,
-				background: '#fff',
+				background: 'transparent',
 				border: '1px solid #e5e7eb',
 				borderRadius: 10,
 				padding: '8px 10px',
