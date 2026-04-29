@@ -10,9 +10,9 @@ export default defineConfig({
 		},
 	},
 	server: {
-		allowedHosts: ['midray.ru'],
+		allowedHosts: ['midray.ru', 'www.midray.ru'],
 	},
 	preview: {
-		allowedHosts: ['midray.ru'],
+		allowedHosts: ['midray.ru', 'www.midray.ru'],
 	},
 });

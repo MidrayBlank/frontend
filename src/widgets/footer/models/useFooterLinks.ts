@@ -8,7 +8,11 @@ export const useFooterLinks = () => {
 	];
 
 	const socialLinks: SocialLink[] = [
-		{ href: '#', icon: 'fab fa-telegram me-1', label: 'Telegram' },
+		{
+			href: 'mailto:support@midray.ru',
+			icon: 'fas fa-envelope me-1',
+			label: 'support@midray.ru',
+		},
 	];
 
 	return { navLinks, socialLinks };

@@ -42,7 +42,7 @@ export function MapCanvas({
 			ref={svgRef}
 			width="100%"
 			viewBox={`0 0 ${width} ${height}`}
-			style={{ display: 'block', background: '#fff' }}
+			style={{ display: 'block', background: 'transparent' }}
 		>
 			<g transform={transform.toString()}>
 				{features.map((feature) => {

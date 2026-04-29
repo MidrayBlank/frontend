@@ -27,7 +27,7 @@ type HoverState = {
 
 const wrapperStyle: CSSProperties = {
 	width: '100%',
-	background: '#fff',
+	background: 'transparent',
 	borderRadius: 16,
 	border: '1px solid #e5e7eb',
 	padding: 16,
@@ -63,7 +63,9 @@ export function RussiaHeatMap({ data, width = 1100, height = 720 }: Props) {
 		<div style={wrapperStyle}>
 			<div style={{ display: 'flex', gap: 16, alignItems: 'center', marginBottom: 16 }}>
 				<YearSelector years={years} selectedIndex={safeYearIndex} onChange={setYearIndex} />
-				<div style={{ fontSize: 14, color: '#4b5563' }}>Население · {years[safeYearIndex]}</div>
+				<div style={{ fontSize: 14, color: 'var(--text-500, #6F82A8)' }}>
+					Население · {years[safeYearIndex]}
+				</div>
 			</div>
 
 			<div style={{ position: 'relative' }}>
