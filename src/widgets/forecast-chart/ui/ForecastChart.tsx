@@ -59,8 +59,18 @@ export function ForecastChart({ regionCode }: { regionCode: number }) {
 				scales: {
 					y: {
 						title: { display: true, text: 'Численность (млн чел)' },
-						min: 140 - 10,
-						max: 165 + 10,
+						min: (() => {
+							const vals = [...forecast.historical, ...forecast.forecast].filter(
+								(v): v is number => v !== null,
+							);
+							return vals.length ? Math.floor(Math.min(...vals) * 0.95) : 0;
+						})(),
+						max: (() => {
+							const vals = [...forecast.historical, ...forecast.forecast].filter(
+								(v): v is number => v !== null,
+							);
+							return vals.length ? Math.ceil(Math.max(...vals) * 1.05) : 100;
+						})(),
 					},
 				},
 			},
