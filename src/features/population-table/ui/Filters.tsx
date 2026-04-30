@@ -9,6 +9,10 @@ interface FiltersProps {
 	onPeriodToChange: (val: number) => void;
 	onApply: () => void;
 	onReset: () => void;
+	subjectOptions: string[];
+	typeOptions: string[];
+	yearMin: number;
+	yearMax: number;
 }
 
 export function Filters({
@@ -22,6 +26,10 @@ export function Filters({
 	onPeriodToChange,
 	onApply,
 	onReset,
+	subjectOptions,
+	typeOptions,
+	yearMax,
+	yearMin,
 }: FiltersProps) {
 	return (
 		<div>
@@ -29,27 +37,31 @@ export function Filters({
 				<div className="col-md-3">
 					<label className="form-label">Субъект РФ</label>
 					<select
-						className="form-select"
 						value={subject}
 						onChange={(e) => onSubjectChange(e.target.value)}
+						className="form-select"
 					>
 						<option value="">Все</option>
-						<option value="Московская область">Московская область</option>
-						<option value="Ленинградская область">Ленинградская область</option>
-						<option value="Краснодарский край">Краснодарский край</option>
-						<option value="Новосибирская область">Новосибирская область</option>
+						{subjectOptions.map((s) => (
+							<option key={s} value={s}>
+								{s}
+							</option>
+						))}
 					</select>
 				</div>
 				<div className="col-md-3">
 					<label className="form-label">Тип МО</label>
 					<select
-						className="form-select"
 						value={type}
 						onChange={(e) => onTypeChange(e.target.value)}
+						className="form-select"
 					>
 						<option value="">Все</option>
-						<option value="городской округ">Городской округ</option>
-						<option value="муниципальный район">Муниципальный район</option>
+						{typeOptions.map((t) => (
+							<option key={t} value={t}>
+								{t}
+							</option>
+						))}
 					</select>
 				</div>
 				<div className="col-md-3">
@@ -59,8 +71,8 @@ export function Filters({
 						className="form-control"
 						value={periodFrom}
 						onChange={(e) => onPeriodFromChange(Number(e.target.value))}
-						min={2004}
-						max={2025}
+						min={yearMin}
+						max={yearMax}
 					/>
 				</div>
 				<div className="col-md-3">

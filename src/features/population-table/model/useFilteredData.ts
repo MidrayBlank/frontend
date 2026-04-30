@@ -117,14 +117,38 @@ export function useFilteredData() {
 		});
 	}, [data, activeFilters]);
 
+	const subjectOptions = useMemo(
+		() => [...new Set(data.map((d) => d.subject))].filter(Boolean).sort(),
+		[data],
+	);
+
+	const typeOptions = useMemo(
+		() => [...new Set(data.map((d) => d.type))].filter(Boolean).sort(),
+		[data],
+	);
+
+	const yearRange = useMemo(() => {
+		const years = data.flatMap((d) => {
+			const match = d.period.match(/(\d{4})(?:–(\d{4}))?/);
+			if (!match) return [];
+			return match[2] ? [parseInt(match[1]), parseInt(match[2])] : [parseInt(match[1])];
+		});
+		return years.length
+			? { min: Math.min(...years), max: Math.max(...years) }
+			: { min: 2004, max: 2025 };
+	}, [data]);
+
 	return {
 		filteredData,
 		loading,
 		error,
 		tempFilters,
 		activeFilters,
+		subjectOptions,
+		typeOptions,
 		updateTempFilter,
 		applyFilters,
 		resetFilters,
+		yearRange,
 	};
 }

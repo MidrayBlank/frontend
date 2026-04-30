@@ -4,8 +4,16 @@ import { ChoroplethMap } from '@/widgets/choropleth-map';
 import { Filters, Table, useFilteredData } from '@/features/population-table';
 
 export function Home() {
-	const { filteredData, tempFilters, updateTempFilter, applyFilters, resetFilters } =
-		useFilteredData();
+	const {
+		filteredData,
+		tempFilters,
+		updateTempFilter,
+		applyFilters,
+		resetFilters,
+		subjectOptions,
+		typeOptions,
+		yearRange,
+	} = useFilteredData();
 
 	return (
 		<>
@@ -60,6 +68,10 @@ export function Home() {
 						onPeriodToChange={(val) => updateTempFilter('yearTo', val)}
 						onApply={applyFilters}
 						onReset={resetFilters}
+						subjectOptions={subjectOptions}
+						typeOptions={typeOptions}
+						yearMin={yearRange.min}
+						yearMax={yearRange.max}
 					/>
 					<Table data={filteredData} />
 				</div>
