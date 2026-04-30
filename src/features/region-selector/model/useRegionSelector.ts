@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { fetchGeo } from '@/shared/api/geoApi';
-import type { UpperMunicipality } from '@/shared/types/russia';
+import type { FederalSubject } from '@/shared/types/russia';
 
 type State =
 	| { status: 'loading' }
 	| { status: 'error'; message: string }
-	| { status: 'ready'; regions: UpperMunicipality[]; selected: UpperMunicipality };
+	| { status: 'ready'; regions: FederalSubject[]; selected: FederalSubject };
 
 export function useRegionSelector() {
 	const [state, setState] = useState<State>({ status: 'loading' });
@@ -17,14 +17,12 @@ export function useRegionSelector() {
 			.then((geo) => {
 				if (!mounted) return;
 
-				const regions = geo.federal_subjects[0]?.upper_municipalities ?? [];
-
-				if (!regions.length) {
+				if (!geo.length) {
 					setState({ status: 'error', message: 'Список регионов пуст' });
 					return;
 				}
 
-				setState({ status: 'ready', regions, selected: regions[0] });
+				setState({ status: 'ready', regions: geo, selected: geo[0] });
 			})
 			.catch((err: unknown) => {
 				if (!mounted) return;

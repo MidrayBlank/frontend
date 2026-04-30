@@ -59,8 +59,8 @@ export function ForecastChart() {
 				scales: {
 					y: {
 						title: { display: true, text: 'Численность (млн чел)' },
-						min: 140,
-						max: 165,
+						min: 140 - 10,
+						max: 165 + 10,
 					},
 				},
 			},

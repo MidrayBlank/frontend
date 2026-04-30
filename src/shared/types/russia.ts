@@ -61,8 +61,4 @@ export type FederalSubject = {
 	upper_municipalities: UpperMunicipality[];
 };
 
-export type GeoResponse = {
-	name: string;
-	code: number;
-	federal_subjects: FederalSubject[];
-};
+export type GeoResponse = FederalSubject[];
