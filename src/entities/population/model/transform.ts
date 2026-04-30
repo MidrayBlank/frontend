@@ -17,18 +17,13 @@ function findNames(
 ): { subject: string; municipality: string; type: string } {
 	if (code === 0) return { subject: 'Российская Федерация', municipality: '', type: 'страна' };
 
-	for (const fs of geo.federal_subjects) {
-		if (fs.code === code) {
-			return { subject: fs.name, municipality: '', type: 'субъект РФ' };
+	for (const region of geo) {
+		if (region.code === code) {
+			return { subject: region.name, municipality: '', type: 'субъект РФ' };
 		}
-		for (const um of fs.upper_municipalities) {
+		for (const um of region.upper_municipalities ?? []) {
 			if (um.code === code) {
-				return { subject: fs.name, municipality: um.name, type: 'муниципальный район' };
-			}
-			for (const lm of um.lower_municipalities ?? []) {
-				if (lm.code === code) {
-					return { subject: fs.name, municipality: lm.name, type: 'городское/сельское поселение' };
-				}
+				return { subject: region.name, municipality: um.name, type: 'муниципальный район' };
 			}
 		}
 	}

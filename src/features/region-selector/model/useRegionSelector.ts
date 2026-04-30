@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { fetchGeo } from '@/shared/api/geoApi';
-import type { FederalSubject } from '@/shared/types/russia';
+import type { UpperMunicipality } from '@/shared/types/russia';
 
 type State =
 	| { status: 'loading' }
 	| { status: 'error'; message: string }
-	| { status: 'ready'; regions: FederalSubject[]; selected: FederalSubject };
+	| { status: 'ready'; regions: UpperMunicipality[]; selected: UpperMunicipality };
 
 export function useRegionSelector() {
 	const [state, setState] = useState<State>({ status: 'loading' });

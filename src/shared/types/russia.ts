@@ -52,7 +52,7 @@ export type LowerMunicipality = {
 export type UpperMunicipality = {
 	name: string;
 	code: number;
-	lower_municipalities: LowerMunicipality[] | null;
+	upper_municipalities: UpperMunicipality[] | null;
 };
 
 export type FederalSubject = {
@@ -61,4 +61,4 @@ export type FederalSubject = {
 	upper_municipalities: UpperMunicipality[];
 };
 
-export type GeoResponse = FederalSubject[];
+export type GeoResponse = UpperMunicipality[];
