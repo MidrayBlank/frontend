@@ -3,6 +3,7 @@ import { useState, useMemo, useEffect } from 'react';
 import type { RosstatItem, GeoResponse } from '@/shared/types/russia';
 import type { PopulationRecord } from '@/entities/population';
 import { transformRosstat } from '@/entities/population/model/transform';
+import { mockPopulationData } from '@/shared/mocks/mockPopulationData';
 
 const ROSSTAT_FIELDS = [
 	'year',
@@ -72,7 +73,8 @@ export function useFilteredData() {
 				const geo: GeoResponse = await geoRes.json();
 				const rosstat: RosstatItem[] = await rosstatRes.json();
 
-				setData(transformRosstat(rosstat, geo));
+				const real = transformRosstat(rosstat, geo);
+				setData(real.length ? real : mockPopulationData);
 			} catch (err) {
 				if ((err as Error).name !== 'AbortError') {
 					setError((err as Error).message);
