@@ -47,7 +47,7 @@ export function RussiaHeatMap({ data, width = 1100, height = 720 }: Props) {
 
 	const { legend, getColor, getValue } = usePopulationColor({
 		rosstat: data.rosstat,
-		selectedYear: safeYearIndex,
+		selectedYear: years[safeYearIndex],
 		hasYears: years.length > 0,
 	});
 

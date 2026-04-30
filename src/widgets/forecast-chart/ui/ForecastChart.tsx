@@ -2,10 +2,10 @@ import { useEffect, useRef } from 'react';
 import Chart from 'chart.js/auto';
 import { useForecast } from '../models/useForecast';
 
-export function ForecastChart() {
+export function ForecastChart({ regionCode }: { regionCode: number }) {
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 	const chartRef = useRef<Chart | null>(null);
-	const { forecast, updateForecast } = useForecast();
+	const { forecast, updateForecast } = useForecast(regionCode);
 
 	// Инициализация и обновление графика
 	useEffect(() => {

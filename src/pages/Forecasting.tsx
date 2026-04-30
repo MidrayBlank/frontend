@@ -44,10 +44,10 @@ export function Forecasting() {
 				{/* График и метрики */}
 				<div className="row">
 					<div className="col-md-8">
-						<ForecastChart />
+						<ForecastChart regionCode={state.selected.code} />
 					</div>
 					<div className="col-md-4">
-						<MetricsCard />
+						<MetricsCard regionCode={state.selected.code} />
 					</div>
 				</div>
 			</div>

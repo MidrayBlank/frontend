@@ -39,7 +39,8 @@ export async function loadRussiaData(): Promise<RussiaData> {
 		const code = feature.properties?.code ?? index + 1;
 		return {
 			code,
-			by_year: YEARS.map((_, yearIndex) => ({
+			by_year: YEARS.map((year, yearIndex) => ({
+				year,
 				population: buildMockPopulation(name, yearIndex),
 			})),
 		};
