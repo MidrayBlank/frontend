@@ -2,6 +2,7 @@ import { Header } from '@/widgets/header';
 import { Footer } from '@/widgets/footer';
 import { ChoroplethMap } from '@/widgets/choropleth-map';
 import { Filters, Table, useFilteredData } from '@/features/population-table';
+import { useState } from 'react';
 
 export function Home() {
 	const {
@@ -14,6 +15,8 @@ export function Home() {
 		typeOptions,
 		yearRange,
 	} = useFilteredData();
+
+	const [mapOpen, setMapOpen] = useState(true);
 
 	return (
 		<>
@@ -40,7 +43,18 @@ export function Home() {
 					<div className="row justify-content-center">
 						<div className="col-11 col-md-10">
 							<div className="card-body">
-								<ChoroplethMap />
+								<div
+									className="d-flex justify-content-between align-items-center mb-2"
+									style={{ cursor: 'pointer' }}
+									onClick={() => setMapOpen((v) => !v)}
+								>
+									<h5 className="mb-0">
+										<i className="fas fa-map me-2"></i>
+										Тепловая карта плотности населения
+									</h5>
+									<i className={`fas fa-chevron-${mapOpen ? 'up' : 'down'}`} />
+								</div>
+								{mapOpen && <ChoroplethMap />}
 							</div>
 						</div>
 					</div>
